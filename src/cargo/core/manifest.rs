@@ -1,11 +1,11 @@
-use std::collections::HashMap;
-use std::fmt;
-use std::path::{PathBuf, Path};
-use std::rc::Rc;
+from std use collections::HashMap;
+from std use fmt;
+from std use path::{PathBuf, Path};
+from std use rc::Rc;
 
-use semver::Version;
-use serde::ser;
-use url::Url;
+from semver use Version;
+from serde  use ser;
+from url    use Url;
 
 use core::{Dependency, PackageId, Summary, SourceId, PackageIdSpec};
 use core::WorkspaceConfig;
@@ -122,7 +122,7 @@ impl ser::Serialize for TargetKind {
     fn serialize<S>(&self, s: S) -> Result<S::Ok, S::Error>
         where S: ser::Serializer,
     {
-        use self::TargetKind::*;
+        from self use TargetKind::*;
         match *self {
             Lib(ref kinds) => kinds.iter().map(LibKind::crate_type).collect(),
             Bin => vec!["bin"],

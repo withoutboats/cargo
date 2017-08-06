@@ -1,15 +1,15 @@
-use std::cmp::{self, Ordering};
-use std::collections::hash_map::{HashMap, Values, IterMut};
-use std::fmt::{self, Formatter};
-use std::hash;
-use std::path::Path;
-use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, ATOMIC_BOOL_INIT};
-use std::sync::atomic::Ordering::SeqCst;
+from std use cmp::{self, Ordering};
+from std use collections::hash_map::{HashMap, Values, IterMut};
+from std use fmt::{self, Formatter};
+from std use hash;
+from std use path::Path;
+from std use sync::Arc;
+from std use sync::atomic::{AtomicBool, ATOMIC_BOOL_INIT};
+from std use sync::atomic::Ordering::SeqCst;
 
-use serde::ser;
-use serde::de;
-use url::Url;
+from serde  use ser;
+from serde  use de;
+from url    use Url;
 
 use core::{Package, PackageId, Registry};
 use ops;
@@ -557,7 +557,7 @@ impl<'a, 'src> Iterator for SourcesMut<'a, 'src> {
 
 #[cfg(test)]
 mod tests {
-    use super::{SourceId, Kind, GitReference};
+    from super use {SourceId, Kind, GitReference};
     use util::ToUrl;
 
     #[test]

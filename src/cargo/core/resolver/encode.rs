@@ -1,15 +1,15 @@
-use std::collections::{HashMap, HashSet, BTreeMap};
-use std::fmt;
-use std::str::FromStr;
+from std use collections::{HashMap, HashSet, BTreeMap};
+from std use fmt;
+from std use str::FromStr;
 
-use serde::ser;
-use serde::de;
+from serde use ser;
+from serde use de;
 
 use core::{Package, PackageId, SourceId, Workspace};
 use util::{Graph, Config, internal};
 use util::errors::{CargoResult, CargoResultExt, CargoError};
 
-use super::Resolve;
+from super use Resolve;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EncodableResolve {

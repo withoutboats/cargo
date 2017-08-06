@@ -1,12 +1,12 @@
-use std::cell::{Ref, RefCell};
-use std::collections::HashMap;
-use std::fmt;
-use std::hash;
-use std::path::{Path, PathBuf};
+from std use cell::{Ref, RefCell};
+from std use collections::HashMap;
+from std use fmt;
+from std use hash;
+from std use path::{Path, PathBuf};
 
-use semver::Version;
-use serde::ser;
-use toml;
+from semver use Version;
+from serde  use ser;
+from toml   use self;
 
 use core::{Dependency, Manifest, PackageId, SourceId, Target};
 use core::{Summary, SourceMap};

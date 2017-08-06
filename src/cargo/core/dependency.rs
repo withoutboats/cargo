@@ -1,10 +1,10 @@
-use std::fmt;
-use std::rc::Rc;
-use std::str::FromStr;
+from std use fmt;
+from std use rc::Rc;
+from std use str::FromStr;
 
-use semver::VersionReq;
-use semver::ReqParseError;
-use serde::ser;
+from semver use VersionReq;
+from semver use ReqParseError;
+from serde  use ser;
 
 use core::{SourceId, Summary, PackageId};
 use util::{Cfg, CfgExpr, Config};

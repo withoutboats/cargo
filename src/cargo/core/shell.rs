@@ -1,9 +1,13 @@
-use std::fmt;
-use std::io::prelude::*;
+from std use fmt;
+from std use io::prelude::*;
 
-use atty;
-use termcolor::Color::{Green, Red, Yellow};
-use termcolor::{self, StandardStream, Color, ColorSpec, WriteColor};
+from atty       use self;
+from termcolor  use Color::{Green, Red, Yellow};
+from termcolor  use {self, StandardStream, Color, ColorSpec, WriteColor};
+
+from self use AdequateTerminal::{NoColor, Colored};
+from self use Verbosity::{Verbose, Quiet};
+from self use ColorConfig::{Auto, Always, Never};
 
 use util::errors::CargoResult;
 

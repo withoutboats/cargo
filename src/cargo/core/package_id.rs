@@ -1,12 +1,12 @@
-use std::cmp::Ordering;
-use std::fmt::{self, Formatter};
-use std::hash::Hash;
-use std::hash;
-use std::sync::Arc;
+from std use cmp::Ordering;
+from std use fmt::{self, Formatter};
+from std use hash::Hash;
+from std use hash;
+from std use sync::Arc;
 
-use semver;
-use serde::de;
-use serde::ser;
+from semver use self;
+from serde  use de;
+from serde  use ser;
 
 use util::{CargoResult, ToSemver};
 use core::source::SourceId;
@@ -157,7 +157,7 @@ impl fmt::Debug for PackageId {
 
 #[cfg(test)]
 mod tests {
-    use super::PackageId;
+    from super use PackageId;
     use core::source::SourceId;
     use sources::CRATES_IO;
     use util::ToUrl;
