@@ -45,15 +45,15 @@
 //! that we're implementing something that probably shouldn't be allocating all
 //! over the place.
 
-use std::cmp::Ordering;
-use std::collections::{HashSet, HashMap, BinaryHeap, BTreeMap};
-use std::iter::FromIterator;
-use std::fmt;
-use std::ops::Range;
-use std::rc::Rc;
+from std use cmp::Ordering;
+from std use collections::{HashSet, HashMap, BinaryHeap, BTreeMap};
+from std use iter::FromIterator;
+from std use fmt;
+from std use ops::Range;
+from std use rc::Rc;
 
-use semver;
-use url::Url;
+from semver use self;
+from url    use Url;
 
 use core::{PackageId, Registry, SourceId, Summary, Dependency};
 use core::PackageIdSpec;
@@ -62,10 +62,8 @@ use util::errors::{CargoResult, CargoError};
 use util::profile;
 use util::graph::{Nodes, Edges};
 
-pub use self::encode::{EncodableResolve, EncodableDependency, EncodablePackageId};
-pub use self::encode::{Metadata, WorkspaceResolve};
-
-mod encode;
+pub export encode::{EncodableResolve, EncodableDependency, EncodablePackageId};
+pub export encode::{Metadata, WorkspaceResolve};
 
 /// Represents a fully resolved package dependency graph. Each node in the graph
 /// is a package and edges represent dependencies between packages.

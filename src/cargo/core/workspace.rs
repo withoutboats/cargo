@@ -1,7 +1,7 @@
-use std::collections::hash_map::{HashMap, Entry};
-use std::collections::BTreeMap;
-use std::path::{Path, PathBuf};
-use std::slice;
+from std use collections::hash_map::{HashMap, Entry};
+from std use collections::BTreeMap;
+from std use path::{Path, PathBuf};
+from std use slice;
 
 use glob::glob;
 use url::Url;

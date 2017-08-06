@@ -1,8 +1,8 @@
-use std::collections::HashMap;
-use std::fmt;
+from std use collections::HashMap;
+from std use fmt;
 
-use semver::Version;
-use url::Url;
+from semver use Version;
+from url    use Url;
 
 use core::PackageId;
 use util::{ToUrl, ToSemver};
@@ -203,10 +203,12 @@ impl fmt::Display for PackageIdSpec {
 
 #[cfg(test)]
 mod tests {
+    from url    use Url;
+    from semver use Version;
+
+    from super use PackageIdSpec;
+
     use core::{PackageId, SourceId};
-    use super::PackageIdSpec;
-    use url::Url;
-    use semver::Version;
 
     #[test]
     fn good_parsing() {

@@ -1,9 +1,9 @@
-use std::collections::HashMap;
-use std::mem;
-use std::rc::Rc;
+from std use collections::HashMap;
+from std use mem;
+from std use rc::Rc;
 
-use semver::Version;
-use core::{Dependency, PackageId, SourceId};
+from semver use Version;
+from core   use {Dependency, PackageId, SourceId};
 
 use util::CargoResult;
 

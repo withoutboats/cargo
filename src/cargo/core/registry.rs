@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+from std use collections::HashMap;
 
 use semver::VersionReq;
 use url::Url;
