@@ -1,5 +1,7 @@
 use std::str::FromStr;
 
+use serde::de;
+
 use super::ed25519;
 use super::pbp;
 use super::{Sha256, Sha512};
@@ -13,12 +15,40 @@ impl FromStr for Signature {
     }
 }
 
+#[derive(Deserialize)]
 pub struct TrustedKeySet {
-    keys: Vec<pbp::PgpKey>,
+    #[serde(rename = "key")]
+    keys: Vec<TrustedKey>,
+}
+
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub enum Privilege {
+    Commit,
+    Rotate,
+}
+
+#[derive(Deserialize, Eq, PartialEq)]
+struct TrustedKey {
+    #[serde(deserialize_with = "deserialize_key")]
+    key: pbp::PgpKey,
+    #[serde(default, rename = "can-commit")]
+    can_commit: bool,
+    #[serde(default, rename = "can-rotate")]
+    can_rotate: bool,
+}
+
+impl TrustedKey {
+    fn privileged(&self, privilege: Privilege) -> bool {
+        match privilege {
+            Privilege::Commit   => self.can_commit,
+            Privilege::Rotate   => self.can_rotate,
+        }
+    }
 }
 
 impl TrustedKeySet {
-    pub fn verify(&self, data: &[u8], signature: &Signature) -> Result<bool, ed25519::SignatureError>
+    pub fn verify(&self, data: &[u8], signature: &Signature, privilege: Privilege)
+        -> Result<bool, ed25519::SignatureError>
     {
         // NB: Both signatures and keys have a "fingerprint," a SHA-1 hash of
         // the public key used to identify which key created each signature.
@@ -30,14 +60,21 @@ impl TrustedKeySet {
         // trusted keys.
 
         let fingerprint = signature.0.fingerprint();
-        let matched_key = self.keys.iter().find(|key| key.fingerprint() == fingerprint);
+
+        let matched_key = self.keys.iter().find(|key| {
+            key.privileged(privilege) && key.key.fingerprint() == fingerprint
+        });
 
         if let Some(key) = matched_key {
-            if verify(key, &signature.0, data)? { return Ok(true) }
+            if verify(&key.key, &signature.0, data)? { return Ok(true) }
         }
 
-        for key in self.keys.iter().filter(|&k| Some(k) != matched_key) {
-            if verify(key, &signature.0, data)? { return Ok(true) }
+        let other_keys = self.keys.iter().filter(|&key| {
+            key.privileged(privilege) && Some(key) != matched_key
+        }
+
+        for key in other_keys {
+            if verify(&key.key, &signature.0, data)? { return Ok(true) }
         }
 
         Ok(false)
@@ -47,4 +84,11 @@ impl TrustedKeySet {
 fn verify(key: &pbp::PgpKey, sig: &pbp::PgpSig, data: &[u8]) -> Result<bool, ed25519::SignatureError>
 {
     Ok(sig.verify_dalek::<Sha256, Sha512, _>(&key.to_dalek()?, |h| h.update(data)))
+}
+
+fn deserialize_key<'de, D: de::Deserializer<'de>>(deserializer: D)
+    -> Result<pbp::PgpKey, D::Error>
+{
+    let s = <String as de::Deserialize>::deserialize(deserializer)?;
+    s.parse().map_err(::serde::de::Error::custom)
 }
