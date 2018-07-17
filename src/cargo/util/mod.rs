@@ -12,12 +12,13 @@ pub use self::paths::{dylib_path, join_paths, bytes2path, path2bytes};
 pub use self::paths::{dylib_path_envvar, normalize_path, without_prefix};
 pub use self::process_builder::{process, ProcessBuilder};
 pub use self::rustc::Rustc;
-pub use self::sha256::Sha256;
 pub use self::to_semver::ToSemver;
 pub use self::to_url::ToUrl;
 pub use self::vcs::{FossilRepo, GitRepo, HgRepo, PijulRepo};
 pub use self::read2::read2;
 pub use self::progress::{Progress, ProgressStyle};
+
+pub use crypto::Sha256;
 
 pub mod config;
 pub mod errors;
@@ -37,7 +38,6 @@ pub mod toml;
 mod cfg;
 mod dependency_queue;
 mod rustc;
-mod sha256;
 mod vcs;
 mod flock;
 mod read2;

@@ -22,11 +22,13 @@ crates-io = { path = "src/crates-io", version = "0.18" }
 crossbeam = "0.3"
 crypto-hash = "0.3.1"
 curl = "0.4.12"
+digest = "0.7.5"
 env_logger = "0.5.4"
 failure = "0.1.1"
 filetime = "0.2"
 flate2 = "1.0"
 fs2 = "0.4"
+generic-array = "0.9"
 git2 = "0.7.0"
 git2-curl = "0.8.1"
 glob = "0.2.11"
@@ -51,6 +53,7 @@ tar = { version = "0.4.15", default-features = false }
 tempfile = "3.0"
 termcolor = "0.3"
 toml = "0.4.2"
+typenum = "1.10.0"
 url = "1.1"
 clap = "2.31.2"
 unicode-width = "0.1.5"
@@ -58,6 +61,12 @@ unicode-width = "0.1.5"
 # Not actually needed right now but required to make sure that rls/cargo build
 # with the same set of features in rust-lang/rust
 num-traits = "0.2" # enable the default feature
+ed25519-dalek = "0.7.0"
+
+[dependencies.pbp]
+version = "0.4.0"
+features = ["dalek"]
+git = "https://github.com/withoutboats/pbp"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 core-foundation = { version = "0.6.0", features = ["mac_os_10_7_support"] }

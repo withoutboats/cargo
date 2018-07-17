@@ -61,6 +61,7 @@ pub use util::errors::Internal;
 pub const CARGO_ENV: &str = "CARGO";
 
 pub mod core;
+pub mod crypto;
 pub mod ops;
 pub mod sources;
 pub mod util;
