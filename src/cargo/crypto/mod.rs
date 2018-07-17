@@ -11,4 +11,4 @@ mod pgp;
 
 pub use self::sha256::Sha256;
 pub use self::sha512::Sha512;
-pub use self::pgp::{Signature, TrustedKeySet};
+pub use self::pgp::{Privilege, TrustedKeySet};
