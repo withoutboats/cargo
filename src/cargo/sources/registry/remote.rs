@@ -89,7 +89,7 @@ impl<'cfg> RemoteRegistry<'cfg> {
 
     fn head(&self) -> CargoResult<git2::Oid> {
         if self.head.get().is_none() {
-            let oid = self.repo()?.refname_to_id("refs/remotes/origin/master")?;
+            let oid = self.repo()?.refname_to_id("refs/heads/master")?;
             self.head.set(Some(oid));
         }
         Ok(self.head.get().unwrap())
@@ -121,6 +121,28 @@ impl<'cfg> RemoteRegistry<'cfg> {
         let tree = unsafe { mem::transmute::<git2::Tree, git2::Tree<'static>>(tree) };
         *self.tree.borrow_mut() = Some(tree);
         Ok(Ref::map(self.tree.borrow(), |s| s.as_ref().unwrap()))
+    }
+
+    fn fetch(&mut self) -> CargoResult<()> {
+        // git fetch origin master
+        let url = self.source_id.url();
+        let refspec = "refs/heads/master:refs/remotes/origin/master";
+        let repo = self.repo.borrow_mut().unwrap();
+        git::fetch(repo, url, refspec, self.config)
+            .chain_err(|| format!("failed to fetch `{}`", url))?;
+
+        Ok(())
+    }
+
+    fn update_head(&mut self) -> CargoResult<()> {
+        let repo = self.repo.borrow_mut().unwrap();
+        let fetch_head = repo.refname_to_id("refs/remotes/origin/master")?;
+        match repo.find_reference("refs/heads/master") {
+            Ok(mut head)    => head.set_target(fetch_head, "")?,
+            Err(_)          => repo.reference("refs/heads/master", fetch_head, false, "")?,
+        };
+
+        Ok(())
     }
 }
 
@@ -197,12 +219,9 @@ impl<'cfg> RegistryData for RemoteRegistry<'cfg> {
             .shell()
             .status("Updating", self.source_id.display_registry())?;
 
-        // git fetch origin master
-        let url = self.source_id.url();
-        let refspec = "refs/heads/master:refs/remotes/origin/master";
-        let repo = self.repo.borrow_mut().unwrap();
-        git::fetch(repo, url, refspec, self.config)
-            .chain_err(|| format!("failed to fetch `{}`", url))?;
+        self.fetch()?;
+        self.update_head()?;
+
         Ok(())
     }
 
